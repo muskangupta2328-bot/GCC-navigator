@@ -81,8 +81,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .ctrl{display:flex;gap:16px;flex-wrap:wrap;align-items:end;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 22px}
 .ctrl div{min-width:170px;flex:1}
 .ctrl label{display:block;font-weight:600;font-size:.84rem;margin:0 0 4px}
-.ctrl select,.ctrl input[type=text],.ctrl input[type=email],.ctrl textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--paper)}
-.ctrl input[type=range]{width:100%}
+.ctrl select,.ctrl input[type=text],.ctrl input[type=email],.ctrl textarea,.ctrl input[type=number]{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--paper)}
 .val{font-weight:700;color:var(--route)}
 .city{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:12px}
 .city.first{border:2px solid var(--route)}
@@ -144,8 +143,16 @@ footer ol{padding-left:22px}
 .drawer input,.drawer select{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:var(--paper)}
 .drawer .x{position:absolute;right:14px;top:calc(12px + env(safe-area-inset-top,0px));background:none;border:1px solid var(--line);border-radius:6px;padding:4px 10px;cursor:pointer}
 [hidden]{display:none!important}
-.ctrl input[type=number]{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--paper)}
-@media (prefers-reduced-motion:no-preference){.meter i,.sbar i,.track i{transition:width .35s,left .35s}}
+.whybox{background:var(--route-soft);border-radius:10px;padding:14px 16px;margin:0 0 18px;font-size:.95rem}
+.whybox b{display:block;margin-bottom:4px}
+.faq{margin:18px 0}
+.faq details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin-bottom:8px}
+.faq summary{font-weight:600;cursor:pointer}
+.faq p{margin:8px 0 0;color:var(--ink2);font-size:.94rem}
+.confirm{background:var(--route-soft);border-radius:10px;padding:16px;margin-top:16px}
+.costcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+.costcard h3{margin:0 0 6px;font:700 1.15rem var(--display)}
+.assumptions{background:var(--paper);border-radius:8px;padding:12px 14px;font-size:.9rem;color:var(--ink2);margin-top:16px}
 </style>
 </head>
 <body>
@@ -159,12 +166,18 @@ footer ol{padding-left:22px}
 <aside class="drawer" id="drawer" role="dialog" aria-label="Your company" aria-modal="true" hidden>
   <button class="x" id="drClose" type="button">Close</button>
   <h2>Your company</h2>
-  <p>Used to tailor the results. It stays in this page and is not sent anywhere.</p>
+  <p>Used to personalise the copy. It stays in this page and is not sent anywhere.</p>
   <label for="coName">Company name</label><input id="coName" type="text" maxlength="60" autocomplete="organization">
   <label for="coWork">Kind of work the centre will do</label><select id="coWork"></select>
 </aside>
 <div id="view"></div>
-<footer><details><summary>Sources and notes</summary><ol id="srcList"></ol><p>Public sources gathered in October 2026. Prototype scores (0 to 100) are this prototype's own estimates from those sources, not published ratings. Guidance, not legal or tax advice.</p></details></footer>
+<footer>
+  <details>
+    <summary>Sources and notes</summary>
+    <ol id="srcList"></ol>
+    <p>Public sources gathered in October 2026. Prototype scores (0 to 100) are this prototype's own estimates from those sources, not published ratings. Guidance, not legal or tax advice. Built as a Product Intern assignment prototype.</p>
+  </details>
+</footer>
 
 <script>
 /* ---------- Sources ---------- */
@@ -186,7 +199,8 @@ var SRC={
  S15:["GCC Journal: list of GCCs in India","https://gccjournal.in/insights/list-of-global-capability-centers-gcc-in-india/"],
  S16:["Razorpay: how to register a subsidiary in India (2026)","https://razorpay.com/rize/blogs/register-subsidiary-company-india-2026"],
  S17:["Intech Group: legal and compliance requirements for setting up a GCC","https://theintechgroup.com/blog/setting-up-gcc-in-india-legal-tax-compliance/"],
- S18:["VJM Global: legal compliance checklist for GCC setup","https://www.vjmglobal.com/blog/legal-compliance-checklist-gcc-setup"]
+ S18:["VJM Global: legal compliance checklist for GCC setup","https://www.vjmglobal.com/blog/legal-compliance-checklist-gcc-setup"],
+ S19:["Flexiple: build your offshore India team","https://flexiple.com/"]
 };
 function cite(ids){return ids.map(function(i){var n=i.slice(1);return '<sup><a href="'+SRC[i][1]+'" target="_blank" rel="noopener" title="'+SRC[i][0].replace(/"/g,'&quot;')+'">['+n+']</a></sup>';}).join('');}
 
@@ -240,17 +254,19 @@ var GAPS=[
  {t:"Is Hyderabad cheaper than Bengaluru?",a:["Described as the best alternative to Bengaluru, offering the same services at a lower cost.",["S9"]],b:["Senior pay has effectively caught up with Bengaluru because of GCC density.",["S11"]],take:"Likely true at different seniority levels. Ask for role-level quotes before assuming a saving."},
  {t:"How many GCCs does India have?",a:["2,117 GCCs across 3,728 units in FY26 (Nasscom-Zinnov), counting both companies and individual centres.",["S13"]],b:["A paid list holds about 1,400 GCCs; a free directory lists 200+ verified ones.",["S14","S15"]],take:"Lists count different things (parent companies, centres, verified entries). Always ask what is being counted."}
 ];
+var FAQ=[
+ {q:"Do I need a local director?",a:"For a private limited company, you need at least two directors. At least one director must be resident in India (stayed in India for at least 182 days in the previous calendar year). Many companies appoint a professional resident director initially."},
+ {q:"How long does incorporation usually take?",a:"With complete documents, company incorporation can often be completed in 1–3 weeks. Digital signatures, name approval and bank account opening add time. Plan for 4–8 weeks end-to-end before you can hire at scale."},
+ {q:"Can I start hiring before all registrations are done?",a:"You can begin recruiting, but you should complete PF, ESIC and Shops & Establishment registrations before (or as) employees join, otherwise you create compliance risk."},
+ {q:"Are state GCC incentives automatic?",a:"No. Most require an application and have conditions (minimum headcount, type of activity, timeline). Check the specific state policy and apply early."}
+];
 
-
-SRC.S19=["Flexiple: build your offshore India team","https://flexiple.com/"];
-
-var S={view:"home",fn:"product",size:100,pref:"bal",place:"",focus:"",type:"",company:""};
+var S={view:"home",fn:"product",size:100,pref:"bal",place:"",focus:"",type:"",company:"",work:"product",expertType:"",expertPlace:"",expertNote:"",expertEmail:"",expertSent:false};
 function coName(){return (S.company||"").trim()}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 var FNO=[["ai","AI and data"],["product","product engineering"],["er","engineering R&D"],["bfsi","finance operations"],["ops","back office work"]];
 var PREFO=[["bal","a balance of everything"],["cost","low cost"],["talent","deep talent"],["stable","keeping people"]];
 var PLACES=[{id:"blr",name:"Bengaluru",st:0},{id:"hyd",name:"Hyderabad",st:3},{id:"pune",name:"Pune",st:1},{id:"chn",name:"Chennai",st:4},{id:"ahd",name:"Ahmedabad and GIFT City",st:2},{id:"mum",name:"Mumbai (limited data)",st:1},{id:"ncr",name:"Delhi NCR (limited data)",st:5}];
-var GAPTAGS=[["all"],["hyd"],["hyd"],["all"]];
 var WHO=["Corporate lawyer","Corporate lawyer","Corporate lawyer","Tax and compliance adviser","Tax and compliance adviser","Tax and compliance adviser","Tax and compliance adviser","Tax and compliance adviser","Corporate lawyer","Tax and compliance adviser"];
 var TYPES=[["Corporate lawyer","Structure, incorporation and contracts."],["Tax and compliance adviser","GST, payroll registrations and filings."],["Real estate adviser","Office search, leases and site visits."],["Recruiting and payroll (Flexiple)","Hiring, payroll and compliance support."],["One-off freelance specialist","A single expert for a short task."]];
 var NAVI=[["cities","Cities"],["cost","Cost"],["approvals","Approvals"],["sources","Source check"],["experts","Specialists"]];
@@ -262,7 +278,8 @@ function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp
 function pById(id){for(var i=0;i<PLACES.length;i++)if(PLACES[i].id===id)return PLACES[i];return null}
 function cById(id){for(var i=0;i<CITIES.length;i++)if(CITIES[i].id===id)return CITIES[i];return null}
 function scoreOf(c){
-  var w=W[S.pref==="bal"?"bal":S.pref];var cost=clamp(100-(mid(c.cost)-65)/35*100),stable=clamp(100-(mid(c.attr)-11)/7*100);
+  var w=W[S.pref==="bal"?"bal":S.pref];
+  var cost=clamp(100-(mid(c.cost)-65)/35*100),stable=clamp(100-(mid(c.attr)-11)/7*100);
   var base=(w.cost*cost+w.talent*c.depth+w.stable*stable+w.policy*c.policy)/100;
   var fit=c.strong.indexOf(S.fn)>=0,flags=[],pen=0;
   if(S.size>=200&&c.depth<50){pen=15;flags.push("A team this large may be hard to hire here, so it is ranked lower.");}
@@ -270,138 +287,238 @@ function scoreOf(c){
   return {total:Math.round(clamp(base+(fit?10:0)-pen)),fit:fit,flags:flags};
 }
 function ranking(){return CITIES.map(function(c){return {c:c,s:scoreOf(c)}}).sort(function(a,b){return b.s.total-a.s.total})}
-function cost(c){return [S.size*14*c.cost[0]/10000,S.size*22*c.cost[1]/10000]}
-function sel(id,opts,cur){return '<select id="'+id+'" aria-label="'+id+'">'+opts.map(function(o){return '<option value="'+o[0]+'"'+(o[0]===cur?" selected":"")+'>'+o[1]+'</option>'}).join("")+'</select>'}
+function costRange(c){return [Math.round(S.size*14*c.cost[0]/100)/10,Math.round(S.size*22*c.cost[1]/100)/10]}
+function sel(id,opts,cur){return '<select id="'+id+'">'+opts.map(function(o){return '<option value="'+o[0]+'"'+(o[0]===cur?" selected":"")+'>'+o[1]+'</option>'}).join("")+'</select>'}
 function placeSel(id){return '<select id="'+id+'"><option value="">All places</option>'+PLACES.map(function(p){return '<option value="'+p.id+'"'+(S.place===p.id?" selected":"")+'>'+esc(p.name)+'</option>'}).join("")+'</select>'}
-function go(v){S.view=v;render();window.scrollTo(0,0)}
+function go(v){S.view=v;S.expertSent=false;render();window.scrollTo(0,0)}
 
-/* ---------- Home ---------- */
-function home(){
-  var r=ranking(),top=r[0].c;
-  var h='<section class="hero"><div class="in"><h1>Set up in India with fewer unknowns.</h1><p class="sub">Compare cities, see the approvals you need, and check where sources disagree. Every number shows its source.</p>'
-   +'<p class="sentence">A centre for '+sel("fn",FNO,S.fn)+' with <input id="size" class="sz" type="number" min="1" max="100000" step="1" value="'+S.size+'" inputmode="numeric" aria-label="Number of people"> people, where '+sel("pref",PREFO,S.pref)+' matters most.</p>'
-   +'<div class="picks" id="picks"></div></div></section>';
-  h+='<div class="band"><div class="tiles">'
-   +'<button class="tile" type="button" data-go="approvals"><h3>Approvals roadmap</h3><p>The registrations and filings in order, with who you need for each.</p><div class="prev"><b>10 steps</b>From structure to employer registrations.<div class="dots" aria-hidden="true"><i></i><u></u><i></i><u></u><i></i><u></u><i></i><u></u><i></i></div></div></button>'
-   +'<button class="tile" type="button" data-go="cost"><h3>Cost estimator</h3><p>A yearly talent cost range for your team, city by city.</p><div class="prev"><b id="pvCost"></b><span id="pvCostS"></span></div></button>'
-   +'<button class="tile" type="button" data-go="sources"><h3>Source check</h3><p>Where published numbers conflict, side by side.</p><div class="prev"><b>'+GAPS.length+' conflicts found</b>Example: '+esc(GAPS[1].t)+'</div></button>'
-   +'<button class="tile" type="button" data-go="experts"><h3>Specialists</h3><p>A lawyer, a compliance adviser or hiring help, when you need a person.</p><div class="prev"><b>5 kinds of help</b>Including hiring and payroll through Flexiple.</div></button>'
-   +'</div><p class="more">Based on public sources gathered in October 2026. Scores are estimates, not official ratings.</p></div>';
-  return h;
-}
-function drawPicks(){
-  var r=ranking().slice(0,3);
-  $("picks").innerHTML=r.map(function(x,i){var c=x.c;return '<div class="pick"><span class="rk">'+(i===0?"Best match"+(coName()?" for "+esc(coName()):""):"Number "+(i+1))+'</span><h3>'+esc(c.name)+'</h3><p class="st">'+esc(c.state)+(x.s.fit?" · strong fit":"")+'</p><div class="meter" aria-hidden="true"><i style="width:'+x.s.total+'%"></i></div><div class="sc"><span>Match</span><b>'+x.s.total+'</b></div><button type="button" data-focus="'+c.id+'">See why</button></div>'}).join("");
-  var t=r[0].c,k=cost(t);
-  if($("pvCost")){$("pvCost").textContent="Rs "+k[0].toFixed(0)+" to "+k[1].toFixed(0)+" crore";$("pvCostS").textContent="per year for "+S.size+" people in "+t.name}
-  document.querySelectorAll("[data-focus]").forEach(function(b){b.addEventListener("click",function(){S.focus=b.dataset.focus;go("cities")})});
+function whyText(rank){
+  var top=rank[0], second=rank[1];
+  var fnLabel=FN[S.fn]||S.fn;
+  var prefLabel={bal:"balanced priorities",cost:"lower cost",talent:"deep talent",stable:"lower attrition"}[S.pref]||"your priorities";
+  var co=coName();
+  var lead=co?("For "+esc(co)+", "):"";
+  var lines=[];
+  lines.push(lead+"we ranked <b>"+esc(top.c.name)+"</b> highest (match "+top.s.total+") for a "+S.size+"-person centre focused on "+fnLabel+", with "+prefLabel+".");
+  if(top.s.fit) lines.push(top.c.name+" shows strength in "+fnLabel+" in the sources we used.");
+  if(top.s.flags.length) lines.push(top.s.flags[0]);
+  if(second) lines.push(esc(second.c.name)+" is close behind (match "+second.s.total+"). Compare both on cost and policy before deciding.");
+  lines.push("Scores combine relative cost, talent depth, attrition and state policy signals from public sources. They are estimates, not official ratings.");
+  return lines.join(" ");
 }
 
-/* ---------- Cities ---------- */
-function cities(){
-  var h='<div class="page"><h1>Compare cities</h1><p class="lead">Ranked on cost, talent depth, retention and state policy.</p>'
-   +'<div class="ctrl"><div><label for="fn">Centre does</label>'+sel("fn",FNO,S.fn)+'</div><div><label for="size">People in year one</label><input id="size" type="number" min="1" max="100000" step="1" value="'+S.size+'" inputmode="numeric"></div><div><label for="pref">Matters most</label>'+sel("pref",PREFO,S.pref)+'</div></div><div id="cl"></div>';
-  h+='<h2 style="font:700 1.2rem var(--display);margin:28px 0 8px">Not ranked: not enough reliable data</h2>'+LIMITED.map(function(l){return '<div class="limited"><b>'+esc(l.name)+'</b><br>'+esc(l.text)+cite(l.src)+'</div>'}).join("")+'</div>';
-  return h;
-}
-function drawCities(){
-  var r=ranking();
-  $("cl").innerHTML=r.map(function(x,i){var c=x.c,L=(c.cost[0]-60)/45*100;
-    return '<article class="city'+(i===0?" first":"")+'" id="c-'+c.id+'"><div class="hd"><h3>'+(i+1)+'. '+esc(c.name)+'<small>'+esc(c.state)+'</small></h3><div class="big">'+x.s.total+'<span> match</span></div></div><div class="sbar" aria-hidden="true"><i style="width:'+x.s.total+'%"></i></div>'
-    +'<div class="kv"><span>Cost <b>'+(c.cost[0]===c.cost[1]?"100":c.cost[0]+" to "+c.cost[1])+'</b> (Bengaluru = 100)</span><span>Attrition <b>'+c.attr[0]+'-'+c.attr[1]+'%</b></span><span>Talent depth <b>'+c.depth+'</b></span></div>'
-    +'<div class="kv" style="margin-top:6px"><span>Policy: <b>'+esc(c.policyText)+'</b></span></div>'
-    +x.s.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join("")
-    +'<details'+(S.focus===c.id?" open":"")+'><summary>Why, with sources</summary><ul>'+c.facts.map(function(f){return '<li>'+esc(f[0])+cite(f[1])+'</li>'}).join("")+'</ul></details></article>';
-  }).join("");
-  if(S.focus){var e=$("c-"+S.focus);if(e&&e.scrollIntoView)e.scrollIntoView({block:"center"});S.focus="";}
-}
-
-/* ---------- Cost ---------- */
-function costPage(){
-  var h='<div class="page"><h1>Cost estimator</h1><p class="lead">Rough yearly talent cost for mid-level software roles. Office, setup and tax costs are not included: we found no reliable city-wise figures.</p>'
-   +'<div class="ctrl"><div><label for="size">People in year one</label><input id="size" type="number" min="1" max="100000" step="1" value="'+S.size+'" inputmode="numeric"></div></div><div id="cb"></div>'
-   +'<p class="note">A Bengaluru GCC mid-level engineer (3 to 5 years) is quoted at Rs 14 to 22 lakh a year'+cite(["S10"])+'. Other cities scale by the cost range from our sources'+cite(["S8","S9"])+'.</p></div>';
-  return h;
-}
-function drawCost(){
-  var r=ranking(),cheapest=CITIES.slice().sort(function(a,b){return mid(a.cost)-mid(b.cost)})[0],kc=cost(cheapest),kb=cost(cById("blr"));
-  var max=cost(cById("blr"))[1];
-  var h='<div class="bignum"><b>Rs '+kc[0].toFixed(1)+' to '+kc[1].toFixed(1)+' crore a year</b><span>in '+esc(cheapest.name)+', the lowest-cost city we found, for '+S.size+' people. Bengaluru: Rs '+kb[0].toFixed(1)+' to '+kb[1].toFixed(1)+' crore.</span></div>';
-  h+=r.map(function(x){var k=cost(x.c);var L=k[0]/max*100,Wd=Math.max(3,(k[1]-k[0])/max*100);return '<div class="rowb"><span><b>'+esc(x.c.name)+'</b></span><div class="track" aria-hidden="true"><i style="left:'+L.toFixed(1)+'%;width:'+Wd.toFixed(1)+'%"></i></div><span>Rs '+k[0].toFixed(1)+' to '+k[1].toFixed(1)+' crore</span></div>'}).join("");
-  $("cb").innerHTML=h;
-}
-
-/* ---------- Approvals ---------- */
-function approvals(){
-  var h='<div class="page"><h1>Approvals roadmap</h1><p class="lead">A typical route for a wholly owned subsidiary of a foreign company.</p><div class="ctrl"><div><label for="pl">Place</label>'+placeSel("pl")+'</div></div><div id="pol"></div><div id="stp"></div>'
-   +'<p class="note"><b>Not yet verified:</b> timelines, fees and form numbers. Confirm each step on the official portal and with a licensed professional.</p></div>';
-  return h;
-}
-function drawApprovals(){
-  var p=S.place?pById(S.place):null;
-  $("pol").innerHTML='<div class="callout">'+(p?'<b>'+esc(STATES[p.st][0])+'</b><br>'+esc(STATES[p.st][1])+cite(STATES[p.st][2]):'Choose a place to see its state GCC policy. The steps below apply in general.')+'</div>';
-  $("stp").innerHTML=STEPS.map(function(s,i){return '<div class="step"><div class="n">'+(i+1)+'</div><div><h3>'+esc(s[0])+'</h3><p>'+esc(s[1])+cite(s[2])+'</p></div><div><span class="who">'+WHO[i]+'</span><br><button class="link" type="button" data-help="'+WHO[i]+'" style="font-size:.84rem;margin-top:6px">Get help</button></div></div>'}).join("");
-  document.querySelectorAll("[data-help]").forEach(function(b){b.addEventListener("click",function(){S.type=b.dataset.help;go("experts")})});
-}
-
-/* ---------- Source check ---------- */
-function sources(){
-  return '<div class="page"><h1>Source check</h1><p class="lead">Places where published sources disagree. Choose a place to see only what applies.</p><div class="ctrl"><div><label for="pl">Place</label>'+placeSel("pl")+'</div></div><div id="go"></div></div>';
-}
-function drawSources(){
-  var sh=GAPS.filter(function(g,i){return !S.place||GAPTAGS[i].indexOf("all")>=0||GAPTAGS[i].indexOf(S.place)>=0});
-  $("go").innerHTML='<p style="color:var(--ink2)">Showing '+sh.length+' of '+GAPS.length+'.</p>'+sh.map(function(g){return '<div class="gap"><h3>'+esc(g.t)+'</h3><div class="row"><div class="v">'+esc(g.a[0])+cite(g.a[1])+'</div><div class="v">'+esc(g.b[0])+cite(g.b[1])+'</div></div><p><b>What to do:</b> '+esc(g.take)+'</p></div>'}).join("");
-}
-
-/* ---------- Specialists ---------- */
-function experts(){
-  var h='<div class="page"><h1>Specialists</h1><p class="lead">Pick the kind of help you need and tell us briefly. This prototype shows the flow; nothing is sent.</p><div class="cards">'
-   +TYPES.map(function(t){return '<button class="sp" type="button" data-type="'+esc(t[0])+'" aria-pressed="'+(S.type===t[0])+'"><h3>'+esc(t[0])+'</h3><p>'+esc(t[1])+'</p></button>'}).join("")+'</div>'
-   +'<div class="ctrl" id="xf"><div><label for="x2">City or state</label><input id="x2" type="text" value="'+esc(S.place?pById(S.place).name.replace(" (limited data)",""):"")+'"></div><div><label for="x4">Work email</label><input id="x4" type="email" placeholder="name@company.com"></div><div style="flex-basis:100%"><label for="x3">What do you need?</label><textarea id="x3" rows="2"></textarea></div><div><button class="go" id="xb" type="button">Request an introduction</button></div></div><div id="xo" role="status"></div>'
-   +'<p class="note"><b>How this earns:</b> exploring is free. An introduction carries a fixed fee for the session plus a small platform fee. Hiring or entity setup through Flexiple is a separate service.</p></div>';
-  return h;
+function whyDetail(item){
+  var c=item.c, s=item.s;
+  var html='<div class="whybox"><b>Why '+esc(c.name)+' scored '+s.total+'</b>';
+  html+='<p style="margin:6px 0 0">Function fit: '+(s.fit?'Strong match for '+FN[S.fn]:'Not listed as a standout for '+FN[S.fn])+'.</p>';
+  if(s.flags.length) html+='<p style="margin:6px 0 0">'+esc(s.flags.join(' '))+'</p>';
+  html+='<p style="margin:8px 0 0"><b>Key facts</b></p><ul style="margin:4px 0 0;padding-left:18px">';
+  c.facts.forEach(function(f){html+='<li>'+esc(f[0])+' '+cite(f[1])+'</li>'});
+  html+='</ul><p style="margin:8px 0 0;font-size:.9rem;color:var(--ink2)">Policy note: '+esc(c.policyText)+'</p></div>';
+  return html;
 }
 
 /* ---------- Render ---------- */
-function render(){
-  $("nav").innerHTML=NAVI.map(function(n){return '<button type="button" data-go="'+n[0]+'"'+(S.view===n[0]?' aria-current="page"':'')+'>'+n[1]+'</button>'}).join("");
-  var v=S.view,m=$("view");
-  m.innerHTML=({home:home,cities:cities,cost:costPage,approvals:approvals,sources:sources,experts:experts}[v])();
-  document.querySelectorAll("[data-go]").forEach(function(b){b.addEventListener("click",function(){go(b.dataset.go)})});
-  var sz=$("size");
-  if(sz)sz.addEventListener("input",function(){var n=Math.floor(+sz.value);if(sz.value!==""&&n>=1&&n<=100000){S.size=n;refresh();}});
-  var fnE=$("fn");if(fnE)fnE.addEventListener("input",function(){S.fn=fnE.value;$("coWork").value=S.fn;updateChip();refresh();});
-  var pf=$("pref");if(pf)pf.addEventListener("input",function(){S.pref=pf.value;refresh();});
-  if(v==="home")drawPicks();
-  if(v==="cities")drawCities();
-  if(v==="cost")drawCost();
-  if(v==="approvals"){drawApprovals();$("pl").addEventListener("change",function(){S.place=$("pl").value;drawApprovals();});}
-  if(v==="sources"){drawSources();$("pl").addEventListener("change",function(){S.place=$("pl").value;drawSources();});}
-  if(v==="experts"){
-    document.querySelectorAll("[data-type]").forEach(function(b){b.addEventListener("click",function(){S.type=b.dataset.type;document.querySelectorAll("[data-type]").forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false")});});});
-    $("xb").addEventListener("click",function(){
-      var o=$("xo"),em=$("x4").value.trim();
-      if(!S.type){o.className="ok";o.textContent="Pick the kind of help you need first.";return;}
-      if(!/^\S+@\S+\.\S+$/.test(em)){o.className="ok";o.textContent="Enter a valid work email so a specialist can reply.";return;}
-      o.className="ok";o.textContent="Request drafted for a "+S.type+". In the full product it goes to a vetted specialist and you hear back at "+em+". Nothing was sent from this prototype.";
-    });
-  }
+function renderNav(){
+  var n=$("nav");
+  n.innerHTML=NAVI.map(function(x){return '<button type="button" data-v="'+x[0]+'"'+(S.view===x[0]?' aria-current="page"':'')+'>'+x[1]+'</button>'}).join("");
+  Array.prototype.forEach.call(n.querySelectorAll("button"),function(b){b.onclick=function(){go(b.getAttribute("data-v"))}});
+  $("logo").onclick=function(){go("home")};
+  var label=coName()||"Your company";
+  $("coBtn").textContent=label.length>22?label.slice(0,20)+"...":label;
 }
-function refresh(){if(S.view==="home")drawPicks();if(S.view==="cities")drawCities();if(S.view==="cost")drawCost();}
-function workLabel(){for(var i=0;i<FNO.length;i++)if(FNO[i][0]===S.fn)return cap(FNO[i][1]);return ""}
-function updateChip(){var n=coName().slice(0,26);$("coBtn").textContent=n?n+" · "+workLabel():"Your company"}
-function openDrawer(){$("scrim").hidden=false;$("drawer").hidden=false;$("coName").focus();}
-function closeDrawer(){$("scrim").hidden=true;$("drawer").hidden=true;$("coBtn").focus();}
-$("coWork").innerHTML=FNO.map(function(o){return '<option value="'+o[0]+'">'+cap(o[1])+'</option>'}).join("");
-$("coWork").value=S.fn;
-$("coName").addEventListener("input",function(){S.company=$("coName").value;updateChip();if(S.view==="home")drawPicks();});
-$("coWork").addEventListener("change",function(){S.fn=$("coWork").value;updateChip();render();});
-$("coBtn").addEventListener("click",openDrawer);$("drClose").addEventListener("click",closeDrawer);$("scrim").addEventListener("click",closeDrawer);
-document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("drawer").hidden)closeDrawer();});
-updateChip();
-$("logo").addEventListener("click",function(){go("home")});
-$("themeBtn").addEventListener("click",function(){var r=document.documentElement;var dark=r.getAttribute("data-theme")==="dark"||(!r.getAttribute("data-theme")&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches);r.setAttribute("data-theme",dark?"light":"dark");});
-$("srcList").innerHTML=Object.keys(SRC).map(function(k){return '<li value="'+k.slice(1)+'"><a href="'+SRC[k][1]+'" target="_blank" rel="noopener">'+esc(SRC[k][0])+'</a></li>'}).join("");
+
+function renderHome(){
+  var rank=ranking();
+  var top3=rank.slice(0,3);
+  var html='<section class="hero"><div class="in">';
+  html+='<h1>Set up in India with fewer unknowns.</h1>';
+  html+='<p class="sub">Compare cities, see the approvals you need, and check where sources disagree. Every number shows its source.</p>';
+  html+='<p class="sentence">A centre for '+sel("fn",FNO,S.fn)+' with <input class="sz" id="sz" type="number" min="20" max="500" value="'+S.size+'"> people, where '+sel("pref",PREFO,S.pref)+' matters most.</p>';
+  html+='<div class="picks">';
+  top3.forEach(function(item,i){
+    var c=item.c,s=item.s;
+    html+='<div class="pick"><div class="rk">'+(i===0?"Best match":"Number "+(i+1))+'</div>';
+    html+='<h3>'+esc(c.name)+'</h3><p class="st">'+esc(c.state)+(s.fit?" · strong fit":"")+'</p>';
+    html+='<div class="meter"><i style="width:'+s.total+'%"></i></div>';
+    html+='<div class="sc"><span>Match</span><b>'+s.total+'</b></div>';
+    html+='<button type="button" data-why="'+c.id+'">See why</button></div>';
+  });
+  html+='</div></div></section>';
+  html+='<div class="band"><div class="tiles">';
+  html+='<button class="tile" type="button" data-go="approvals"><h3>Approvals roadmap</h3><p>The registrations and filings in order, with who you need for each.</p><div class="prev"><b>10 steps</b>From structure to employer registrations.<div class="dots"><i></i><u></u><i></i><u></u><i></i><u></u><i></i><u></u><i></i></div></div></button>';
+  var cr=costRange(top3[0].c);
+  html+='<button class="tile" type="button" data-go="cost"><h3>Cost estimator</h3><p>A yearly talent cost range for your team, city by city.</p><div class="prev"><b>Rs '+cr[0]+' to '+cr[1]+' crore</b>per year for '+S.size+' people in '+esc(top3[0].c.name)+'</div></button>';
+  html+='</div>';
+  html+='<div class="whybox" style="margin-top:18px"><b>Why this ranking?</b><p style="margin:6px 0 0">'+whyText(rank)+'</p></div>';
+  html+='<p class="more">Open <button class="link" type="button" data-go="cities">Cities</button> for the full comparison, or <button class="link" type="button" data-go="sources">Source check</button> to see where reports disagree.</p></div>';
+  $("view").innerHTML=html;
+  bindHome();
+}
+
+function bindHome(){
+  var fn=$("fn"), pref=$("pref"), sz=$("sz");
+  if(fn) fn.onchange=function(){S.fn=fn.value;render()};
+  if(pref) pref.onchange=function(){S.pref=pref.value;render()};
+  if(sz) sz.onchange=function(){S.size=Math.max(20,Math.min(500,parseInt(sz.value,10)||100));render()};
+  Array.prototype.forEach.call(document.querySelectorAll("[data-go]"),function(b){b.onclick=function(){go(b.getAttribute("data-go"))}});
+  Array.prototype.forEach.call(document.querySelectorAll("[data-why]"),function(b){
+    b.onclick=function(){
+      var id=b.getAttribute("data-why");
+      var rank=ranking();
+      var item=rank.find(function(r){return r.c.id===id});
+      if(!item) return;
+      var box=document.querySelector(".whybox");
+      if(box){box.outerHTML=whyDetail(item)+'<p class="more"><button class="link" type="button" id="backWhy">Back to ranking explanation</button></p>';
+        $("backWhy").onclick=function(){render()};
+      }
+    };
+  });
+}
+
+function renderCities(){
+  var rank=ranking();
+  var html='<div class="page"><h1>Cities</h1><p class="lead">Ranked for a '+S.size+'-person centre doing '+esc(FN[S.fn])+', with preference for '+esc({bal:"balance",cost:"low cost",talent:"deep talent",stable:"keeping people"}[S.pref])+'. Scores are prototype estimates from public sources.</p>';
+  html+='<div class="whybox"><b>Why this ranking?</b><p style="margin:6px 0 0">'+whyText(rank)+'</p></div>';
+  html+='<div class="ctrl"><div><label>Function</label>'+sel("fn2",FNO,S.fn)+'</div><div><label>Team size</label><input type="number" id="sz2" min="20" max="500" value="'+S.size+'"></div><div><label>Priority</label>'+sel("pref2",PREFO,S.pref)+'</div></div>';
+  rank.forEach(function(item,i){
+    var c=item.c,s=item.s;
+    html+='<div class="city'+(i===0?' first':'')+'"><div class="hd"><h3>'+esc(c.name)+' <small>'+esc(c.state)+'</small></h3><div class="big">'+s.total+' <span>match</span></div></div>';
+    html+='<div class="sbar"><i style="width:'+s.total+'%"></i></div>';
+    html+='<div class="kv"><span>Talent depth <b>'+c.depth+'</b></span><span>Relative cost index <b>'+mid(c.cost)+'</b></span><span>Attrition ~<b>'+mid(c.attr)+'%</b></span><span>Policy signal <b>'+c.policy+'</b></span></div>';
+    if(s.flags.length) s.flags.forEach(function(f){html+='<span class="flag">'+esc(f)+'</span>'});
+    html+='<details><summary>Facts and sources</summary><ul>';
+    c.facts.forEach(function(f){html+='<li>'+esc(f[0])+' '+cite(f[1])+'</li>'});
+    html+='</ul><p style="margin-top:8px;font-size:.9rem">'+esc(c.policyText)+'</p></details></div>';
+  });
+  html+='<h2 style="margin-top:28px;font:700 1.2rem var(--display)">Limited data (not scored)</h2>';
+  LIMITED.forEach(function(l){html+='<div class="limited"><b>'+esc(l.name)+'</b> — '+esc(l.text)+' '+cite(l.src)+'</div>'});
+  html+='</div>';
+  $("view").innerHTML=html;
+  $("fn2").onchange=function(){S.fn=$("fn2").value;render()};
+  $("pref2").onchange=function(){S.pref=$("pref2").value;render()};
+  $("sz2").onchange=function(){S.size=Math.max(20,Math.min(500,parseInt($("sz2").value,10)||100));render()};
+}
+
+function renderCost(){
+  var rank=ranking();
+  var html='<div class="page"><h1>Cost estimator</h1><p class="lead">Rough yearly talent cost ranges for a '+S.size+'-person team. These are order-of-magnitude estimates only, based on relative city cost indices and public salary signals.</p>';
+  html+='<div class="ctrl"><div><label>Team size</label><input type="number" id="sz3" min="20" max="500" value="'+S.size+'"></div><div><label>Function (affects ranking context)</label>'+sel("fn3",FNO,S.fn)+'</div></div>';
+  rank.forEach(function(item,i){
+    var c=item.c, cr=costRange(c);
+    html+='<div class="costcard"><h3>'+(i+1)+'. '+esc(c.name)+'</h3>';
+    html+='<p style="margin:0 0 6px;font-size:1.25rem;font-weight:700">Rs '+cr[0]+' – '+cr[1]+' crore <span style="font-weight:500;font-size:.9rem;color:var(--ink2)">per year</span></p>';
+    html+='<div class="kv"><span>Relative cost index <b>'+mid(c.cost)+'</b> (Bengaluru ≈ 100)</span><span>Match score <b>'+item.s.total+'</b></span></div></div>';
+  });
+  html+='<div class="assumptions"><b>Assumptions</b><ul style="margin:6px 0 0;padding-left:18px">';
+  html+='<li>Blended annual cost per person roughly scaled from public salary bands for engineering / GCC roles.</li>';
+  html+='<li>City index is relative (Bengaluru = 100). Lower index → lower estimated range.</li>';
+  html+='<li>Does not include office rent, benefits loading, travel, or setup one-time costs.</li>';
+  html+='<li>Sources used for context: '+cite(["S8","S9","S10","S11"])+'</li>';
+  html+='</ul><p style="margin:8px 0 0">Use this for early planning only. Get role-level quotes before budgeting.</p></div></div>';
+  $("view").innerHTML=html;
+  $("sz3").onchange=function(){S.size=Math.max(20,Math.min(500,parseInt($("sz3").value,10)||100));render()};
+  $("fn3").onchange=function(){S.fn=$("fn3").value;render()};
+}
+
+function renderApprovals(){
+  var html='<div class="page"><h1>Approvals roadmap</h1><p class="lead">A practical sequence of registrations and filings most foreign companies face when setting up a capability centre. This is guidance, not legal advice.</p>';
+  html+='<div class="callout">Start with legal structure and foreign investment route. Later steps (GST, PF, ESIC, Shops & Establishment) depend on the entity you form and when you hire.</div>';
+  STEPS.forEach(function(st,i){
+    html+='<div class="step"><div class="n">'+(i+1)+'</div><div><h3>'+esc(st[0])+'</h3><p>'+esc(st[1])+' '+cite(st[2])+'</p></div><span class="who">'+esc(WHO[i]||"Adviser")+'</span></div>';
+  });
+  html+='<h2 style="margin:28px 0 10px;font:700 1.25rem var(--display)">State policy snapshot</h2>';
+  STATES.forEach(function(st){html+='<div class="limited"><b>'+esc(st[0])+'</b> — '+esc(st[1])+' '+cite(st[2])+'</div>'});
+  html+='<h2 style="margin:28px 0 10px;font:700 1.25rem var(--display)">Common questions</h2><div class="faq">';
+  FAQ.forEach(function(f){html+='<details><summary>'+esc(f.q)+'</summary><p>'+esc(f.a)+'</p></details>'});
+  html+='</div>';
+  html+='<p class="note">Need a lawyer or compliance adviser for your specific case? <button class="link" type="button" id="toExperts">Request a specialist →</button></p></div>';
+  $("view").innerHTML=html;
+  $("toExperts").onclick=function(){go("experts")};
+}
+
+function renderSources(){
+  var html='<div class="page"><h1>Source check</h1><p class="lead">Where public reports disagree. This is the core information-asymmetry problem the product is built to surface.</p>';
+  GAPS.forEach(function(g){
+    html+='<div class="gap"><h3>'+esc(g.t)+'</h3><div class="row"><div class="v"><b>Source A</b><br>'+esc(g.a[0])+' '+cite(g.a[1])+'</div><div class="v"><b>Source B</b><br>'+esc(g.b[0])+' '+cite(g.b[1])+'</div></div>';
+    html+='<p><b>Takeaway:</b> '+esc(g.take)+'</p></div>';
+  });
+  html+='<p class="note">Always ask what a list is counting (parent companies vs centres vs verified entries) and check the state’s own notified policy before relying on incentive claims.</p></div>';
+  $("view").innerHTML=html;
+}
+
+function renderExperts(){
+  var html='<div class="page"><h1>Specialists</h1><p class="lead">When you need one expert before you hire a full team. Tell us what you need; in a full product this would route to a vetted specialist. Here it demonstrates the flow.</p>';
+  if(S.expertSent){
+    var placeName=(PLACES.find(function(p){return p.id===S.expertPlace})||{}).name||S.expertPlace||"your location";
+    html+='<div class="confirm"><b>Request noted</b><p style="margin:8px 0 0">We have recorded your request for a <b>'+esc(S.expertType||"specialist")+'</b>'+(S.expertPlace?' in <b>'+esc(placeName)+'</b>':'')+'.';
+    if(S.expertEmail) html+=' We will use <b>'+esc(S.expertEmail)+'</b> to follow up.';
+    html+='</p><p style="margin:8px 0 0;font-size:.92rem;color:var(--ink2)">In production this would introduce you to a relevant specialist. For this prototype the request stays on the page only.</p>';
+    html+='<p style="margin:12px 0 0"><button class="link" type="button" id="again">Submit another request</button></p></div>';
+    $("view").innerHTML=html;
+    $("again").onclick=function(){S.expertSent=false;render()};
+    return;
+  }
+  html+='<div class="cards">';
+  TYPES.forEach(function(t,i){
+    html+='<button class="sp" type="button" data-type="'+esc(t[0])+'"'+(S.expertType===t[0]?' aria-pressed="true"':'')+'><h3>'+esc(t[0])+'</h3><p>'+esc(t[1])+'</p></button>';
+  });
+  html+='</div>';
+  html+='<div class="ctrl" style="flex-direction:column;align-items:stretch">';
+  html+='<div><label>Type of help</label><select id="exType"><option value="">Select…</option>'+TYPES.map(function(t){return '<option value="'+esc(t[0])+'"'+(S.expertType===t[0]?' selected':'')+'>'+esc(t[0])+'</option>'}).join("")+'</select></div>';
+  html+='<div><label>State / city focus</label>'+placeSel("exPlace")+'</div>';
+  html+='<div><label>Short description</label><textarea id="exNote" rows="3" placeholder="e.g. Need help incorporating a WOS in Karnataka and first PF registration">'+esc(S.expertNote||"")+'</textarea></div>';
+  html+='<div><label>Email (optional)</label><input type="email" id="exEmail" value="'+esc(S.expertEmail||"")+'" placeholder="you@company.com"></div>';
+  html+='<div style="margin-top:8px"><button class="go" type="button" id="exGo">Request introduction</button></div>';
+  html+='</div>';
+  html+='<p class="note">Recruiting and payroll at scale is handled by <a href="https://flexiple.com/" target="_blank" rel="noopener">Flexiple</a>. This page is for the specialist help you often need earlier.</p></div>';
+  $("view").innerHTML=html;
+  Array.prototype.forEach.call(document.querySelectorAll(".sp"),function(b){
+    b.onclick=function(){S.expertType=b.getAttribute("data-type");render()};
+  });
+  $("exType").onchange=function(){S.expertType=$("exType").value};
+  $("exPlace").onchange=function(){S.place=$("exPlace").value;S.expertPlace=$("exPlace").value};
+  $("exNote").oninput=function(){S.expertNote=$("exNote").value};
+  $("exEmail").oninput=function(){S.expertEmail=$("exEmail").value};
+  $("exGo").onclick=function(){
+    S.expertType=$("exType").value||S.expertType;
+    S.expertPlace=$("exPlace").value;
+    S.expertNote=$("exNote").value;
+    S.expertEmail=$("exEmail").value;
+    if(!S.expertType){alert("Please select the type of help you need.");return;}
+    S.expertSent=true;
+    render();
+  };
+}
+
+function render(){
+  renderNav();
+  if(S.view==="home") renderHome();
+  else if(S.view==="cities") renderCities();
+  else if(S.view==="cost") renderCost();
+  else if(S.view==="approvals") renderApprovals();
+  else if(S.view==="sources") renderSources();
+  else if(S.view==="experts") renderExperts();
+  else renderHome();
+  // sources list
+  var ol=$("srcList");
+  if(ol){ol.innerHTML=Object.keys(SRC).map(function(k){return '<li><a href="'+SRC[k][1]+'" target="_blank" rel="noopener">'+esc(SRC[k][0])+'</a></li>'}).join("")}
+}
+
+/* ---------- Chrome ---------- */
+$("themeBtn").onclick=function(){
+  var cur=document.documentElement.getAttribute("data-theme");
+  document.documentElement.setAttribute("data-theme",cur==="dark"?"light":(cur==="light"?"dark":(window.matchMedia("(prefers-color-scheme: dark)").matches?"light":"dark")));
+};
+$("coBtn").onclick=function(){$("scrim").hidden=false;$("drawer").hidden=false;$("coName").value=S.company;$("coWork").innerHTML=FNO.map(function(o){return '<option value="'+o[0]+'"'+(S.work===o[0]?" selected":"")+'>'+o[1]+'</option>'}).join("")};
+$("drClose").onclick=$("scrim").onclick=function(){
+  S.company=$("coName").value;
+  S.work=$("coWork").value;
+  if(S.work) S.fn=S.work;
+  $("scrim").hidden=true;$("drawer").hidden=true;
+  render();
+};
+
 render();
 </script>
 </body>
