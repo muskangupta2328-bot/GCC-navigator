@@ -63,8 +63,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .pick .sc b{color:var(--hero-ink);font:700 1.2rem var(--display)}
 .pick button{margin-top:12px;background:none;border:1px solid var(--hero-ink2);color:var(--hero-ink);border-radius:6px;padding:6px 12px;cursor:pointer;font-weight:600}
 .band{margin:-26px auto 0;max-width:1040px;padding:0 24px}
-.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-@media (max-width:700px){.tiles{grid-template-columns:1fr}}
+.tiles{display:grid;grid-template-columns:1fr;gap:14px;max-width:480px}
 .tile{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;text-align:left;cursor:pointer;display:block;width:100%}
 .tile:hover{border-color:var(--route)}
 .tile h3{font:700 1.2rem var(--display);margin:0 0 4px}
@@ -82,7 +81,6 @@ button,input,select,textarea{font:inherit;color:inherit}
 .ctrl div{min-width:170px;flex:1}
 .ctrl label{display:block;font-weight:600;font-size:.84rem;margin:0 0 4px}
 .ctrl select,.ctrl input[type=text],.ctrl input[type=email],.ctrl textarea,.ctrl input[type=number]{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--paper)}
-.val{font-weight:700;color:var(--route)}
 .city{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:12px}
 .city.first{border:2px solid var(--route)}
 .city .hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
@@ -100,13 +98,6 @@ summary{cursor:pointer;font-weight:600;color:var(--route)}
 details ul{margin:8px 0 0;padding-left:20px}
 details li{margin:4px 0;font-size:.92rem}
 sup a{text-decoration:none;font-weight:600}
-.rowb{display:grid;grid-template-columns:180px 1fr 190px;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:.94rem}
-@media (max-width:640px){.rowb{grid-template-columns:1fr}}
-.track{position:relative;height:14px;background:var(--line);border-radius:7px}
-.track i{position:absolute;top:0;bottom:0;background:var(--route);border-radius:7px;min-width:6px}
-.bignum{background:var(--hero);color:var(--hero-ink);border-radius:14px;padding:22px 24px;margin:0 0 20px}
-.bignum b{display:block;font:700 clamp(1.8rem,5vw,2.8rem)/1.1 var(--display);color:var(--accent)}
-.bignum span{color:var(--hero-ink2)}
 .step{display:grid;grid-template-columns:38px 1fr auto;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);align-items:start}
 .step .n{width:32px;height:32px;border-radius:50%;background:var(--route);color:var(--onroute);display:grid;place-items:center;font:700 .95rem var(--display)}
 .step h3{margin:0;font:600 1rem var(--body)}
@@ -150,9 +141,6 @@ footer ol{padding-left:22px}
 .faq summary{font-weight:600;cursor:pointer}
 .faq p{margin:8px 0 0;color:var(--ink2);font-size:.94rem}
 .confirm{background:var(--route-soft);border-radius:10px;padding:16px;margin-top:16px}
-.costcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
-.costcard h3{margin:0 0 6px;font:700 1.15rem var(--display)}
-.assumptions{background:var(--paper);border-radius:8px;padding:12px 14px;font-size:.9rem;color:var(--ink2);margin-top:16px}
 </style>
 </head>
 <body>
@@ -261,22 +249,19 @@ var FAQ=[
  {q:"Are state GCC incentives automatic?",a:"No. Most require an application and have conditions (minimum headcount, type of activity, timeline). Check the specific state policy and apply early."}
 ];
 
-var S={view:"home",fn:"product",size:100,pref:"bal",place:"",focus:"",type:"",company:"",work:"product",expertType:"",expertPlace:"",expertNote:"",expertEmail:"",expertSent:false};
+var S={view:"home",fn:"product",size:100,pref:"bal",place:"",company:"",work:"product",expertType:"",expertPlace:"",expertNote:"",expertEmail:"",expertSent:false};
 function coName(){return (S.company||"").trim()}
-function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 var FNO=[["ai","AI and data"],["product","product engineering"],["er","engineering R&D"],["bfsi","finance operations"],["ops","back office work"]];
 var PREFO=[["bal","a balance of everything"],["cost","low cost"],["talent","deep talent"],["stable","keeping people"]];
-var PLACES=[{id:"blr",name:"Bengaluru",st:0},{id:"hyd",name:"Hyderabad",st:3},{id:"pune",name:"Pune",st:1},{id:"chn",name:"Chennai",st:4},{id:"ahd",name:"Ahmedabad and GIFT City",st:2},{id:"mum",name:"Mumbai (limited data)",st:1},{id:"ncr",name:"Delhi NCR (limited data)",st:5}];
+var PLACES=[{id:"blr",name:"Bengaluru"},{id:"hyd",name:"Hyderabad"},{id:"pune",name:"Pune"},{id:"chn",name:"Chennai"},{id:"ahd",name:"Ahmedabad and GIFT City"},{id:"mum",name:"Mumbai (limited data)"},{id:"ncr",name:"Delhi NCR (limited data)"}];
 var WHO=["Corporate lawyer","Corporate lawyer","Corporate lawyer","Tax and compliance adviser","Tax and compliance adviser","Tax and compliance adviser","Tax and compliance adviser","Tax and compliance adviser","Corporate lawyer","Tax and compliance adviser"];
 var TYPES=[["Corporate lawyer","Structure, incorporation and contracts."],["Tax and compliance adviser","GST, payroll registrations and filings."],["Real estate adviser","Office search, leases and site visits."],["Recruiting and payroll (Flexiple)","Hiring, payroll and compliance support."],["One-off freelance specialist","A single expert for a short task."]];
-var NAVI=[["cities","Cities"],["cost","Cost"],["approvals","Approvals"],["sources","Source check"],["experts","Specialists"]];
+var NAVI=[["cities","Cities"],["approvals","Approvals"],["sources","Source check"],["experts","Specialists"]];
 
 function $(id){return document.getElementById(id)}
 function clamp(x){return Math.max(0,Math.min(100,x))}
 function mid(a){return (a[0]+a[1])/2}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
-function pById(id){for(var i=0;i<PLACES.length;i++)if(PLACES[i].id===id)return PLACES[i];return null}
-function cById(id){for(var i=0;i<CITIES.length;i++)if(CITIES[i].id===id)return CITIES[i];return null}
 function scoreOf(c){
   var w=W[S.pref==="bal"?"bal":S.pref];
   var cost=clamp(100-(mid(c.cost)-65)/35*100),stable=clamp(100-(mid(c.attr)-11)/7*100);
@@ -287,9 +272,8 @@ function scoreOf(c){
   return {total:Math.round(clamp(base+(fit?10:0)-pen)),fit:fit,flags:flags};
 }
 function ranking(){return CITIES.map(function(c){return {c:c,s:scoreOf(c)}}).sort(function(a,b){return b.s.total-a.s.total})}
-function costRange(c){return [Math.round(S.size*14*c.cost[0]/100)/10,Math.round(S.size*22*c.cost[1]/100)/10]}
 function sel(id,opts,cur){return '<select id="'+id+'">'+opts.map(function(o){return '<option value="'+o[0]+'"'+(o[0]===cur?" selected":"")+'>'+o[1]+'</option>'}).join("")+'</select>'}
-function placeSel(id){return '<select id="'+id+'"><option value="">All places</option>'+PLACES.map(function(p){return '<option value="'+p.id+'"'+(S.place===p.id?" selected":"")+'>'+esc(p.name)+'</option>'}).join("")+'</select>'}
+function placeSel(id){return '<select id="'+id+'"><option value="">All places</option>'+PLACES.map(function(p){return '<option value="'+p.id+'"'+(S.expertPlace===p.id?" selected":"")+'>'+esc(p.name)+'</option>'}).join("")+'</select>'}
 function go(v){S.view=v;S.expertSent=false;render();window.scrollTo(0,0)}
 
 function whyText(rank){
@@ -302,8 +286,8 @@ function whyText(rank){
   lines.push(lead+"we ranked <b>"+esc(top.c.name)+"</b> highest (match "+top.s.total+") for a "+S.size+"-person centre focused on "+fnLabel+", with "+prefLabel+".");
   if(top.s.fit) lines.push(top.c.name+" shows strength in "+fnLabel+" in the sources we used.");
   if(top.s.flags.length) lines.push(top.s.flags[0]);
-  if(second) lines.push(esc(second.c.name)+" is close behind (match "+second.s.total+"). Compare both on cost and policy before deciding.");
-  lines.push("Scores combine relative cost, talent depth, attrition and state policy signals from public sources. They are estimates, not official ratings.");
+  if(second) lines.push(esc(second.c.name)+" is close behind (match "+second.s.total+"). Compare both on talent depth and policy before deciding.");
+  lines.push("Scores combine relative cost signals, talent depth, attrition and state policy from public sources. They are estimates, not official ratings.");
   return lines.join(" ");
 }
 
@@ -318,7 +302,6 @@ function whyDetail(item){
   return html;
 }
 
-/* ---------- Render ---------- */
 function renderNav(){
   var n=$("nav");
   n.innerHTML=NAVI.map(function(x){return '<button type="button" data-v="'+x[0]+'"'+(S.view===x[0]?' aria-current="page"':'')+'>'+x[1]+'</button>'}).join("");
@@ -347,8 +330,6 @@ function renderHome(){
   html+='</div></div></section>';
   html+='<div class="band"><div class="tiles">';
   html+='<button class="tile" type="button" data-go="approvals"><h3>Approvals roadmap</h3><p>The registrations and filings in order, with who you need for each.</p><div class="prev"><b>10 steps</b>From structure to employer registrations.<div class="dots"><i></i><u></u><i></i><u></u><i></i><u></u><i></i><u></u><i></i></div></div></button>';
-  var cr=costRange(top3[0].c);
-  html+='<button class="tile" type="button" data-go="cost"><h3>Cost estimator</h3><p>A yearly talent cost range for your team, city by city.</p><div class="prev"><b>Rs '+cr[0]+' to '+cr[1]+' crore</b>per year for '+S.size+' people in '+esc(top3[0].c.name)+'</div></button>';
   html+='</div>';
   html+='<div class="whybox" style="margin-top:18px"><b>Why this ranking?</b><p style="margin:6px 0 0">'+whyText(rank)+'</p></div>';
   html+='<p class="more">Open <button class="link" type="button" data-go="cities">Cities</button> for the full comparison, or <button class="link" type="button" data-go="sources">Source check</button> to see where reports disagree.</p></div>';
@@ -400,27 +381,6 @@ function renderCities(){
   $("sz2").onchange=function(){S.size=Math.max(20,Math.min(500,parseInt($("sz2").value,10)||100));render()};
 }
 
-function renderCost(){
-  var rank=ranking();
-  var html='<div class="page"><h1>Cost estimator</h1><p class="lead">Rough yearly talent cost ranges for a '+S.size+'-person team. These are order-of-magnitude estimates only, based on relative city cost indices and public salary signals.</p>';
-  html+='<div class="ctrl"><div><label>Team size</label><input type="number" id="sz3" min="20" max="500" value="'+S.size+'"></div><div><label>Function (affects ranking context)</label>'+sel("fn3",FNO,S.fn)+'</div></div>';
-  rank.forEach(function(item,i){
-    var c=item.c, cr=costRange(c);
-    html+='<div class="costcard"><h3>'+(i+1)+'. '+esc(c.name)+'</h3>';
-    html+='<p style="margin:0 0 6px;font-size:1.25rem;font-weight:700">Rs '+cr[0]+' – '+cr[1]+' crore <span style="font-weight:500;font-size:.9rem;color:var(--ink2)">per year</span></p>';
-    html+='<div class="kv"><span>Relative cost index <b>'+mid(c.cost)+'</b> (Bengaluru ≈ 100)</span><span>Match score <b>'+item.s.total+'</b></span></div></div>';
-  });
-  html+='<div class="assumptions"><b>Assumptions</b><ul style="margin:6px 0 0;padding-left:18px">';
-  html+='<li>Blended annual cost per person roughly scaled from public salary bands for engineering / GCC roles.</li>';
-  html+='<li>City index is relative (Bengaluru = 100). Lower index → lower estimated range.</li>';
-  html+='<li>Does not include office rent, benefits loading, travel, or setup one-time costs.</li>';
-  html+='<li>Sources used for context: '+cite(["S8","S9","S10","S11"])+'</li>';
-  html+='</ul><p style="margin:8px 0 0">Use this for early planning only. Get role-level quotes before budgeting.</p></div></div>';
-  $("view").innerHTML=html;
-  $("sz3").onchange=function(){S.size=Math.max(20,Math.min(500,parseInt($("sz3").value,10)||100));render()};
-  $("fn3").onchange=function(){S.fn=$("fn3").value;render()};
-}
-
 function renderApprovals(){
   var html='<div class="page"><h1>Approvals roadmap</h1><p class="lead">A practical sequence of registrations and filings most foreign companies face when setting up a capability centre. This is guidance, not legal advice.</p>';
   html+='<div class="callout">Start with legal structure and foreign investment route. Later steps (GST, PF, ESIC, Shops & Establishment) depend on the entity you form and when you hire.</div>';
@@ -460,7 +420,7 @@ function renderExperts(){
     return;
   }
   html+='<div class="cards">';
-  TYPES.forEach(function(t,i){
+  TYPES.forEach(function(t){
     html+='<button class="sp" type="button" data-type="'+esc(t[0])+'"'+(S.expertType===t[0]?' aria-pressed="true"':'')+'><h3>'+esc(t[0])+'</h3><p>'+esc(t[1])+'</p></button>';
   });
   html+='</div>';
@@ -477,7 +437,7 @@ function renderExperts(){
     b.onclick=function(){S.expertType=b.getAttribute("data-type");render()};
   });
   $("exType").onchange=function(){S.expertType=$("exType").value};
-  $("exPlace").onchange=function(){S.place=$("exPlace").value;S.expertPlace=$("exPlace").value};
+  $("exPlace").onchange=function(){S.expertPlace=$("exPlace").value};
   $("exNote").oninput=function(){S.expertNote=$("exNote").value};
   $("exEmail").oninput=function(){S.expertEmail=$("exEmail").value};
   $("exGo").onclick=function(){
@@ -495,17 +455,14 @@ function render(){
   renderNav();
   if(S.view==="home") renderHome();
   else if(S.view==="cities") renderCities();
-  else if(S.view==="cost") renderCost();
   else if(S.view==="approvals") renderApprovals();
   else if(S.view==="sources") renderSources();
   else if(S.view==="experts") renderExperts();
   else renderHome();
-  // sources list
   var ol=$("srcList");
   if(ol){ol.innerHTML=Object.keys(SRC).map(function(k){return '<li><a href="'+SRC[k][1]+'" target="_blank" rel="noopener">'+esc(SRC[k][0])+'</a></li>'}).join("")}
 }
 
-/* ---------- Chrome ---------- */
 $("themeBtn").onclick=function(){
   var cur=document.documentElement.getAttribute("data-theme");
   document.documentElement.setAttribute("data-theme",cur==="dark"?"light":(cur==="light"?"dark":(window.matchMedia("(prefers-color-scheme: dark)").matches?"light":"dark")));
