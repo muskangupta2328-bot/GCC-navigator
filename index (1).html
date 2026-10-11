@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GCC Navigator: where to set up an India capability centre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --paper:#E7ECEA; --surface:#F6F8F7; --ink:#14252B; --ink2:#44575D; --line:#C3CECA;
+  --route:#1F5C7A; --route-soft:#D3E4EC; --good:#2B7757; --warn:#9A5B00; --warn-soft:#F3E4C4;
+  --band:#1F5C7A; --track:#D5DDDA;
+  --display:"Bricolage Grotesque","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  --body:"Public Sans","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1A1E; --surface:#16272D; --ink:#E4EEEC; --ink2:#A6B8B6; --line:#2B3F45;
+    --route:#6FB3D2; --route-soft:#1D3A47; --good:#6CC9A0; --warn:#E3B25C; --warn-soft:#3A2D12;
+    --band:#6FB3D2; --track:#26393F;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1A1E; --surface:#16272D; --ink:#E4EEEC; --ink2:#A6B8B6; --line:#2B3F45;
+  --route:#6FB3D2; --route-soft:#1D3A47; --good:#6CC9A0; --warn:#E3B25C; --warn-soft:#3A2D12;
+  --band:#6FB3D2; --track:#26393F;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.55 var(--body)}
+a{color:var(--route)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--route);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:28px 20px 64px}
+header h1{font:700 clamp(2rem,5vw,3.2rem)/1.05 var(--display);margin:0 0 10px;letter-spacing:-.02em}
+header p{margin:0;max-width:62ch;color:var(--ink2);font-size:1.08rem}
+.note{margin:18px 0 0;padding:10px 14px;background:var(--route-soft);border-radius:6px;max-width:78ch;font-size:.92rem}
+.layout{display:grid;grid-template-columns:300px 1fr;gap:28px;margin-top:28px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:1fr}}
+.brief{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;position:sticky;top:12px}
+@media (max-width:860px){.brief{position:static}}
+.brief h2{font:700 1.15rem var(--display);margin:0 0 4px}
+.brief p.s{margin:0 0 14px;color:var(--ink2);font-size:.9rem}
+label{display:block;font-weight:600;font-size:.9rem;margin:14px 0 5px}
+select,input[type=number],input[type=email],input[type=text],textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:var(--paper)}
+input[type=range]{width:100%}
+.val{font-weight:600;color:var(--route)}
+nav.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:2px solid var(--line);margin-bottom:22px}
+nav.tabs button{background:none;border:0;padding:10px 14px;font-weight:600;color:var(--ink2);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px}
+nav.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--route)}
+section.pane[hidden]{display:none}
+h2.pt{font:700 1.5rem var(--display);margin:0 0 6px;letter-spacing:-.01em}
+.lead{color:var(--ink2);margin:0 0 20px;max-width:68ch}
+.city{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:14px}
+.city.first{border-width:2px;border-color:var(--route)}
+.city .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.city h3{font:700 1.35rem var(--display);margin:0}
+.city h3 small{font:500 .9rem var(--body);color:var(--ink2);margin-left:6px}
+.score{font:700 1.6rem var(--display)}
+.score span{font:500 .8rem var(--body);color:var(--ink2)}
+.why{margin:8px 0 12px}
+.bandrow{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;font-size:.88rem;margin:6px 0}
+@media (max-width:560px){.bandrow{grid-template-columns:1fr}}
+.track{position:relative;height:10px;background:var(--track);border-radius:5px}
+.band{position:absolute;top:0;bottom:0;background:var(--band);border-radius:5px;min-width:6px}
+.mini{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem;color:var(--ink2);margin:10px 0 4px}
+.mini b{color:var(--ink)}
+.flag{display:inline-block;background:var(--warn-soft);color:var(--warn);border-radius:4px;padding:2px 8px;font-size:.82rem;font-weight:600;margin:4px 6px 0 0}
+details{margin-top:8px}
+summary{cursor:pointer;font-weight:600;color:var(--route)}
+details ul{margin:8px 0 0;padding-left:20px}
+details li{margin:4px 0;font-size:.92rem}
+sup a{text-decoration:none;font-weight:600}
+.limited{background:transparent;border:1px dashed var(--line);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.limited h3{font:700 1.1rem var(--display);margin:0 0 4px}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--ink2)}
+.tw{overflow-x:auto}
+.step{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.step .n{font:700 1.1rem var(--display);color:var(--route)}
+.step h4{margin:0 0 3px;font:600 1rem var(--body)}
+.step p{margin:2px 0;font-size:.92rem;color:var(--ink2)}
+.src{font-size:.82rem}
+.callout{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--route);border-radius:6px;padding:12px 16px;margin:14px 0}
+.gap{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.gap h3{font:700 1.05rem var(--display);margin:0 0 8px}
+.gap .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.gap .row{grid-template-columns:1fr}}
+.gap .v{background:var(--paper);border-radius:6px;padding:10px 12px;font-size:.92rem}
+.gap .take{margin:10px 0 0;font-size:.92rem}
+button.primary{background:var(--route);color:var(--paper);border:0;border-radius:6px;padding:10px 18px;font-weight:600;cursor:pointer}
+:root[data-theme="dark"] button.primary{color:#0E1A1E}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) button.primary{color:#0E1A1E}}
+button.chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer;font-size:.88rem;margin:0 6px 6px 0}
+button.chip:hover{border-color:var(--route)}
+.answer{white-space:pre-wrap;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-top:14px;min-height:60px}
+.form2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;max-width:760px}
+.form2 .full{grid-column:1/-1}
+@media (max-width:640px){.form2{grid-template-columns:1fr}}
+footer{margin-top:40px;font-size:.86rem;color:var(--ink2)}
+footer ol{padding-left:22px}
+footer li{margin:3px 0}
+.theme{position:absolute;right:20px;top:20px}
+.theme button{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer}
+@media (prefers-reduced-motion:no-preference){.band{transition:left .3s,width .3s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="theme"><button id="themeBtn" type="button" aria-label="Switch colour theme">Theme</button></div>
+<header>
+  <h1>GCC Navigator</h1>
+  <p>Choose a city for your India capability centre, see which approvals you will need, and see where published sources disagree, so you know how far to trust each number.</p>
+  <p class="note"><b>Prototype.</b> Built from public sources gathered in October 2026 (listed at the bottom). Scores are this prototype's own simple estimates from those sources, not official figures. This is guidance, not legal or tax advice.</p>
+</header>
+
+<div class="layout">
+  <aside class="brief" aria-label="Your requirements">
+    <h2>Your requirements</h2>
+    <p class="s">Change these and the results update.</p>
+    <label for="fn">What will the centre do?</label>
+    <select id="fn">
+      <option value="ai">AI, ML and data</option>
+      <option value="product" selected>Product engineering</option>
+      <option value="er">Engineering R&amp;D</option>
+      <option value="bfsi">Banking, finance and insurance</option>
+      <option value="ops">Shared services and back office</option>
+    </select>
+    <label for="size">Team in year one: <span class="val" id="sizeV">100</span> people</label>
+    <input id="size" type="range" min="25" max="500" step="25" value="100">
+    <label for="pref">What matters most?</label>
+    <select id="pref">
+      <option value="bal" selected>A balance of everything</option>
+      <option value="cost">Keeping cost down</option>
+      <option value="talent">Deep talent pool</option>
+      <option value="stable">Keeping people (low attrition)</option>
+    </select>
+  </aside>
+
+  <main>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button role="tab" aria-selected="true" data-pane="cities" id="t-cities">Compare cities</button>
+      <button role="tab" aria-selected="false" data-pane="approvals" id="t-approvals">Approvals roadmap</button>
+      <button role="tab" aria-selected="false" data-pane="gaps" id="t-gaps">Where sources disagree</button>
+      <button role="tab" aria-selected="false" data-pane="ask" id="t-ask">Ask a question</button>
+      <button role="tab" aria-selected="false" data-pane="expert" id="t-expert">Talk to a specialist</button>
+    </nav>
+
+    <section class="pane" id="cities" role="tabpanel" aria-labelledby="t-cities">
+      <h2 class="pt">Where should we set up?</h2>
+      <p class="lead">Cities are ranked on four things: cost, depth of talent, how well people stay, and state policy support. Each cost is shown as a range because sources do not agree on one number.</p>
+      <div id="cityList"></div>
+      <h2 class="pt" style="margin-top:30px">Rough yearly talent cost</h2>
+      <p class="lead" id="costLead"></p>
+      <div class="tw"><table id="costTable"></table></div>
+      <h2 class="pt" style="margin-top:30px">Not ranked: not enough reliable data yet</h2>
+      <p class="lead">We left these two out of the ranking rather than guess. Filling gaps like these is what a shared source of truth would do.</p>
+      <div id="limitedList"></div>
+    </section>
+
+    <section class="pane" id="approvals" role="tabpanel" aria-labelledby="t-approvals" hidden>
+      <h2 class="pt">What you will need to file</h2>
+      <p class="lead">A typical route for a foreign company setting up a wholly owned subsidiary. Pick a state to see what we found on its GCC policy.</p>
+      <label for="st">State</label>
+      <select id="st" style="max-width:340px"></select>
+      <div id="policyBox" class="callout"></div>
+      <div id="stepList"></div>
+      <p class="callout"><b>Not yet verified:</b> timelines, fees and exact form numbers. Each step should be confirmed on the official portal and with a licensed professional before you act.</p>
+    </section>
+
+    <section class="pane" id="gaps" role="tabpanel" aria-labelledby="t-gaps" hidden>
+      <h2 class="pt">Where published sources disagree</h2>
+      <p class="lead">These came up while building this prototype. Showing them openly is part of the point: you should see the conflict, not a single confident number.</p>
+      <div id="gapList"></div>
+    </section>
+
+    <section class="pane" id="ask" role="tabpanel" aria-labelledby="t-ask" hidden>
+      <h2 class="pt">Ask a question</h2>
+      <p class="lead">Answers use only the data in this prototype. If something is not in the data, the answer says so.</p>
+      <div id="askBox">
+        <div id="chips"></div>
+        <label for="q">Your question</label>
+        <input id="q" type="text" placeholder="For example: Which city suits a 200-person AI team on a tight budget?">
+        <p style="margin:12px 0 0"><button class="primary" id="askBtn" type="button">Ask</button></p>
+        <div class="answer" id="ans" aria-live="polite">Your answer will appear here.</div>
+      </div>
+      <p class="callout" id="noAI" hidden>The AI assistant is available to viewers who are signed in to Claude. Cities, approvals and the disagreements tab all work without it.</p>
+    </section>
+
+    <section class="pane" id="expert" role="tabpanel" aria-labelledby="t-expert" hidden>
+      <h2 class="pt">Talk to a specialist</h2>
+      <p class="lead">When you need a person, such as a corporate lawyer, a compliance adviser or a real estate adviser, tell us what you need. This prototype shows the request flow; it does not send anything.</p>
+      <div class="form2">
+        <div><label for="x1">Type of help</label>
+          <select id="x1"><option>Corporate lawyer</option><option>Tax and compliance adviser</option><option>Real estate adviser</option><option>Recruiting and payroll (Flexiple)</option><option>One-off freelance specialist</option></select></div>
+        <div><label for="x2">City or state</label><input id="x2" type="text" placeholder="For example: Pune, Maharashtra"></div>
+        <div class="full"><label for="x3">What do you need?</label><textarea id="x3" rows="3" placeholder="For example: Review our plan to set up a private limited subsidiary."></textarea></div>
+        <div class="full"><label for="x4">Work email</label><input id="x4" type="email" placeholder="name@company.com"></div>
+        <div class="full"><p style="margin:14px 0 0"><button class="primary" id="xBtn" type="button">Request an introduction</button></p></div>
+      </div>
+      <div class="callout" id="xOut" hidden></div>
+      <p class="callout"><b>How this earns:</b> exploring is free. A specialist introduction carries a fixed fee for the session plus a small platform fee, and moving on to hiring or entity setup through Flexiple is a separate service.</p>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <h2 class="pt" style="font-size:1.1rem">Sources</h2>
+  <ol id="srcList"></ol>
+  <p>Research compiled October 2026. Where a figure is a range, the range comes from the source or sources named. Prototype scores (0 to 100) are derived from those figures and are an estimate, not a published rating.</p>
+</footer>
+</div>
+
+<script>
+/* ---------- Sources ---------- */
+var SRC={
+ S1:["Savills India H1 2026 office leasing (The Realty Today)","https://therealtytoday.com/news/market-insights/office-leasing-across-indias-top-six-cities-reaches-416-million-sq-ft-in-h1-2026/"],
+ S2:["Colliers H1 2026 office market (Tribune India)","https://www.tribuneindia.com/news/business/indias-office-market-remains-cautious-despite-resilient-demand-and-selective-rental-gains-report/"],
+ S3:["CREDAI-CRE Matrix India Office Report Q2 2026","https://www.crematrix.com/blog/india-office-space-trends-2026-rents-up-vacancy-down/"],
+ S4:["CBRE, The Policy Advantage, as reported by Entrepreneur India","https://india.entrepreneur.com/business-news/states-target-1-1-mn-gcc-jobs-by-2031-cbre"],
+ S5:["CBRE, The Policy Advantage, as reported by The People's Board","https://www.thepeoplesboard.com/news/seven-states-chase-1380-gccs-and-12-lakh-jobs-by-2031/"],
+ S6:["Mondaq: Choosing the right location in India for your GCC","https://www.mondaq.com/india/government-contracts-procurement-ppp/1819112/choosing-the-right-location-in-india-for-your-gcc"],
+ S7:["Conventus Law: key highlights of the Gujarat GCC Policy 2025-30","https://conventuslaw.com/report/india-key-highlights-of-gujarat-gcc-policy-2025-30/"],
+ S8:["RK HRM: Global Capability Centres in India 2026 guide","https://www.rkhrm.com/blog/blog-gcc-india-complete-guide-2026/"],
+ S9:["Wisemonk: GCC hubs in India","https://www.wisemonk.io/fr/blogs/gcc-hubs-in-india"],
+ S10:["GCC Journal: GCC salary calculator","https://gccjournal.in/gcc-salary-calculator/"],
+ S11:["Omnivoo: software engineer salary in India 2026","https://omnivoo.com/blog/software-engineer-salary-india-2026"],
+ S12:["Flexiple: India GCC statistics 2026","https://flexiple.com/gcc/statistics"],
+ S13:["Nasscom-Zinnov figures (CXO Today)","https://cxotoday.com/others/from-delivery-engines-to-ai-nerve-centers-indias-gccs-take-the-global-lead/"],
+ S14:["AIM Research: list of about 1,400 GCCs","https://aimresearch.co/?p=4006"],
+ S15:["GCC Journal: list of GCCs in India","https://gccjournal.in/insights/list-of-global-capability-centers-gcc-in-india/"],
+ S16:["Razorpay: how to register a subsidiary in India (2026)","https://razorpay.com/rize/blogs/register-subsidiary-company-india-2026"],
+ S17:["Intech Group: legal and compliance requirements for setting up a GCC","https://theintechgroup.com/blog/setting-up-gcc-in-india-legal-tax-compliance/"],
+ S18:["VJM Global: legal compliance checklist for GCC setup","https://www.vjmglobal.com/blog/legal-compliance-checklist-gcc-setup"]
+};
+function cite(ids){return ids.map(function(i){var n=i.slice(1);return '<sup><a href="'+SRC[i][1]+'" target="_blank" rel="noopener" title="'+SRC[i][0].replace(/"/g,'&quot;')+'">['+n+']</a></sup>';}).join('');}
+
+/* ---------- Data ---------- */
+var CITIES=[
+ {id:"blr",name:"Bengaluru",state:"Karnataka",cost:[100,100],attr:[16,18],depth:100,policy:80,policyText:"Dedicated state GCC policy (Karnataka introduced the first)",
+  strong:["ai","product","er","bfsi"],
+  facts:[["Karnataka hosts 875+ GCC units, about 35% of India's GCC workforce.",["S6"]],["Lowest vacancy among major markets (9.6%); market rent about Rs 93.7 per sq ft.",["S3"]],["Attrition about 16-18%.",["S8"]],["Nearly half of India's AI and ML talent is based here.",["S8"]],["Karnataka targets about 500 new GCCs and 3.5 lakh jobs by 2029.",["S4"]]]},
+ {id:"hyd",name:"Hyderabad",state:"Telangana",cost:[90,100],attr:[16,18],depth:85,policy:60,policyText:"Policy framework adopted; no official policy document found in our research",
+  strong:["product"],
+  facts:[["GCCs made up 73% of H1 2026 office leasing, the highest share of any city.",["S1"]],["H1 2026 leasing is reported at 5.9 mn sq ft by one firm and 7.2 mn sq ft by another.",["S1","S2"]],["Attrition about 16-18%.",["S8"]],["Cost: one source says senior pay has nearly caught up with Bengaluru, another calls it the best lower-cost alternative.",["S11","S9"]],["Official Telangana GCC policy text could not be sourced.",["S12"]]]},
+ {id:"pune",name:"Pune",state:"Maharashtra",cost:[75,85],attr:[13,15],depth:75,policy:80,policyText:"Maharashtra GCC Policy 2025",
+  strong:["product","er","ops"],
+  facts:[["360+ GCCs in 2025, up from 210 in 2019.",["S8"]],["Cost about 15-25% below Bengaluru; attrition about 14%.",["S9","S8"]],["A leading centre for engineering R&D.",["S8"]],["Office take-up fell 25-30% year on year in Q2 2026.",["S2"]],["Maharashtra targets about 200 centres and 4 lakh jobs by 2030.",["S4"]]]},
+ {id:"chn",name:"Chennai",state:"Tamil Nadu",cost:[80,85],attr:[13,15],depth:60,policy:50,policyText:"Incentives for GCC employees; no dedicated GCC policy listed",
+  strong:["er","ops"],
+  facts:[["Cost about 15-20% below Bengaluru; attrition about 14%.",["S9"]],["H1 2026 office leasing about 4.0 mn sq ft.",["S1"]],["Strong for engineering, automotive and hardware-linked software.",["S8","S11"]],["Tamil Nadu has introduced specific incentives for GCC employees.",["S4"]]]},
+ {id:"ahd",name:"Ahmedabad and GIFT City",state:"Gujarat",cost:[65,75],attr:[11,15],depth:30,policy:80,policyText:"Gujarat GCC Policy 2025-30 (issued 11 February 2025)",
+  strong:["bfsi","ops"],
+  facts:[["About 50 GCCs and rising quickly; cost index 65-72 in one source.",["S8"]],["Attrition about 11-13% in one source, 12-15% in another.",["S8","S9"]],["Gujarat's policy covers new or existing units with at least 50 employees on payroll.",["S7"]],["Market rent runs 54.4% above passing rent, the widest gap nationally, driven by GIFT City demand.",["S3"]],["Focus on banking, fintech and IFSC.",["S8"]]]}
+];
+var LIMITED=[
+ {name:"Mumbai",text:"Anchors banking and finance demand. Called the most expensive office market in one ranking. We found no reliable talent-cost range for GCC roles, so we have not scored it. Maharashtra's GCC policy applies.",src:["S2","S6"]},
+ {name:"Delhi NCR (Gurugram and Noida)",text:"About 6.2 mn sq ft of H1 2026 office take-up in one report. Haryana is listed with a dedicated policy in one report and Delhi with a framework. We found no reliable talent-cost or attrition range, so we have not scored it.",src:["S1","S4"]}
+];
+var FN={ai:"AI, ML and data",product:"product engineering",er:"engineering R&D",bfsi:"banking, finance and insurance",ops:"shared services and back office"};
+var W={bal:{cost:25,talent:30,stable:20,policy:25},cost:{cost:45,talent:15,stable:20,policy:20},talent:{cost:10,talent:50,stable:20,policy:20},stable:{cost:20,talent:20,stable:40,policy:20}};
+var STEPS=[
+ ["Choose the legal structure","Most foreign parents form a private limited company as a wholly owned subsidiary. Branch and liaison offices exist but suit different needs. Decide this first, because later steps depend on it.",["S16","S17"]],
+ ["Check the foreign investment route","For most IT and IT-enabled activities, 100% foreign investment is allowed under the automatic route. Confirm that your exact activity qualifies before you file anything.",["S17","S16"]],
+ ["Get digital signatures and incorporate","Directors need digital signature certificates before any electronic filing. The company is then incorporated under the Companies Act, 2013.",["S17","S18"]],
+ ["Report foreign investment to the RBI","When funds come in from abroad, the investment is reported under the foreign exchange rules (FEMA).",["S16"]],
+ ["Register for GST","Needed if the entity makes taxable supplies, such as services billed to the parent. Confirm whether and when this applies to your model.",["S18","S16"]],
+ ["Register for PF and ESIC","Required once you start hiring employees. Gratuity rules also apply.",["S18","S16"]],
+ ["Register under the state's Shops and Establishment rules","A state-level registration for the office. Rules and forms differ by state.",["S16"]],
+ ["Check your state GCC policy","Some states offer incentives with conditions. Gujarat's, for example, covers units with at least 50 employees on payroll. Apply before or as you set up, as the policy requires.",["S7","S4"]],
+ ["Plan for data protection","The Digital Personal Data Protection Act, 2023 applies to GCCs that handle personal data.",["S18"]],
+ ["Set up ongoing filings","Plan for monthly and annual GST, TDS and corporate tax returns once you are operating.",["S17"]]
+];
+var STATES=[
+ ["Karnataka (Bengaluru)","Dedicated GCC policy. Karnataka introduced the first state GCC policy and targets about 500 new GCCs and 3.5 lakh jobs by 2029.",["S4","S6"]],
+ ["Maharashtra (Pune, Mumbai)","Maharashtra GCC Policy 2025, targeting about 200 centres and 4 lakh jobs by 2030.",["S6","S4"]],
+ ["Gujarat (Ahmedabad, GIFT City)","Gujarat GCC Policy 2025-30, issued 11 February 2025 by the Department of Science and Technology. It covers new or existing units with at least 50 employees on payroll. GCCs that run start-up incubation can claim under the IT/ITeS policy.",["S7"]],
+ ["Telangana (Hyderabad)","Listed as having adopted a policy framework. We could not source an official policy document, so check with the state before relying on any incentive.",["S4","S12"]],
+ ["Tamil Nadu (Chennai)","Introduced incentives aimed at GCC employees. We did not find a dedicated GCC policy in our sources.",["S4"]],
+ ["Delhi NCR (Haryana and Delhi)","Haryana is listed with a dedicated policy in one report, and Delhi with a framework. Check the policy that applies to the exact site.",["S4","S5"]]
+];
+var GAPS=[
+ {t:"How many states have a GCC policy?",a:["One report on the CBRE study lists eight states with dedicated policies: Karnataka, Maharashtra, Haryana, Uttar Pradesh, Gujarat, Rajasthan, Madhya Pradesh and Andhra Pradesh, with Kerala's still a draft.",["S4"]],b:["Another report on the same study lists seven formal policies: Karnataka, Maharashtra, Rajasthan, Gujarat, Kerala, Haryana and Madhya Pradesh. A law-firm note covers only four states.",["S5","S6"]],take:"A company reading one source would shortlist different states from one reading another. Check the state's own notified policy."},
+ {t:"How much office space did Hyderabad lease in H1 2026?",a:["About 7.2 mn sq ft, up 47% on last year.",["S2"]],b:["About 5.9 mn sq ft, up 9%.",["S1"]],take:"The two firms measure different sets of cities and deals. Use the trend, not the exact number."},
+ {t:"Is Hyderabad cheaper than Bengaluru?",a:["Described as the best alternative to Bengaluru, offering the same services at a lower cost.",["S9"]],b:["Senior pay has effectively caught up with Bengaluru because of GCC density.",["S11"]],take:"Likely true at different seniority levels. Ask for role-level quotes before assuming a saving."},
+ {t:"How many GCCs does India have?",a:["2,117 GCCs across 3,728 units in FY26 (Nasscom-Zinnov), counting both companies and individual centres.",["S13"]],b:["A paid list holds about 1,400 GCCs; a free directory lists 200+ verified ones.",["S14","S15"]],take:"Lists count different things (parent companies, centres, verified entries). Always ask what is being counted."}
+];
+
+/* ---------- Helpers ---------- */
+function $(id){return document.getElementById(id)}
+function clamp(x){return Math.max(0,Math.min(100,x))}
+function mid(a){return (a[0]+a[1])/2}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function scoreOf(c,fn,size,pref){
+  var w=W[pref]; var cost=clamp(100-(mid(c.cost)-65)/35*100); var stable=clamp(100-(mid(c.attr)-11)/7*100);
+  var base=(w.cost*cost+w.talent*c.depth+w.stable*stable+w.policy*c.policy)/100;
+  var fit=c.strong.indexOf(fn)>=0; var total=base+(fit?10:0);
+  var flags=[]; if(size>=200&&c.depth<50)flags.push("Large teams may be hard to hire here: the talent pool is still small.");
+  if(!fit)flags.push("Not a standout for "+FN[fn]+" in our sources.");
+  return {total:Math.round(clamp(total)),cost:Math.round(cost),stable:Math.round(stable),fit:fit,flags:flags};
+}
+
+/* ---------- Cities ---------- */
+function renderCities(){
+  var fn=$("fn").value,size=+$("size").value,pref=$("pref").value;
+  var rows=CITIES.map(function(c){return {c:c,s:scoreOf(c,fn,size,pref)}}).sort(function(a,b){return b.s.total-a.s.total});
+  var html="";
+  rows.forEach(function(r,i){
+    var c=r.c,s=r.s,L=(c.cost[0]-60)/45*100,Wd=Math.max(3,(c.cost[1]-c.cost[0])/45*100);
+    var why=s.fit?c.name+" is a strong fit for "+FN[fn]+" in our sources. ":"";
+    why+=i===0?"It ranks first on the priorities you chose.":"Ranked "+(i+1)+" of "+rows.length+" on the priorities you chose.";
+    html+='<article class="city'+(i===0?" first":"")+'"><div class="top"><h3>'+(i+1)+'. '+esc(c.name)+'<small>'+esc(c.state)+'</small></h3><div class="score">'+s.total+'<span> out of 100</span></div></div>'
+    +'<p class="why">'+esc(why)+'</p>'
+    +'<div class="bandrow"><span>Cost (Bengaluru = 100)</span><div class="track" aria-hidden="true"><div class="band" style="left:'+L.toFixed(1)+'%;width:'+Wd.toFixed(1)+'%"></div></div><b>'+(c.cost[0]===c.cost[1]?c.cost[0]:c.cost[0]+" to "+c.cost[1])+'</b></div>'
+    +'<div class="mini"><span>Talent depth <b>'+c.depth+'</b></span><span>Attrition <b>'+c.attr[0]+'-'+c.attr[1]+'%</b></span><span>Policy: <b>'+esc(c.policyText)+'</b></span></div>'
+    +s.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join("")
+    +'<details><summary>What this is based on</summary><ul>'+c.facts.map(function(f){return '<li>'+esc(f[0])+cite(f[1])+'</li>'}).join("")+'</ul></details></article>';
+  });
+  $("cityList").innerHTML=html;
+  // cost table
+  var lo=14,hi=22;
+  $("costLead").textContent="For "+size+" mid-level software roles. A Bengaluru GCC mid-level engineer (3 to 5 years) is quoted at Rs 14 to 22 lakh a year in one source; other cities scale by the cost range above. Talent only: office, setup and tax costs are not included because we found no reliable city-wise figures.";
+  var t='<thead><tr><th>City</th><th>Talent cost per year</th></tr></thead><tbody>';
+  rows.forEach(function(r){var c=r.c;var a=size*lo*c.cost[0]/100/100,b=size*hi*c.cost[1]/100/100;
+    t+='<tr><td>'+esc(c.name)+'</td><td>Rs '+a.toFixed(1)+' to '+b.toFixed(1)+' crore</td></tr>';});
+  t+='</tbody>'; $("costTable").innerHTML=t;
+  $("costLead").innerHTML+=cite(["S10"]);
+}
+function renderLimited(){
+  $("limitedList").innerHTML=LIMITED.map(function(l){return '<div class="limited"><h3>'+esc(l.name)+'</h3><p style="margin:0">'+esc(l.text)+cite(l.src)+'</p></div>'}).join("");
+}
+
+/* ---------- Approvals ---------- */
+function renderApprovals(){
+  var i=+$("st").value; var s=STATES[i];
+  $("policyBox").innerHTML='<b>'+esc(s[0])+'</b><br>'+esc(s[1])+cite(s[2]);
+  $("stepList").innerHTML=STEPS.map(function(st,k){return '<div class="step"><div class="n">'+(k+1)+'</div><div><h4>'+esc(st[0])+'</h4><p>'+esc(st[1])+'</p><p class="src">Based on'+cite(st[2])+' Confirm on the official portal and with a licensed professional.</p></div></div>'}).join("");
+}
+function renderGaps(){
+  $("gapList").innerHTML=GAPS.map(function(g){return '<div class="gap"><h3>'+esc(g.t)+'</h3><div class="row"><div class="v">'+esc(g.a[0])+cite(g.a[1])+'</div><div class="v">'+esc(g.b[0])+cite(g.b[1])+'</div></div><p class="take"><b>What to do:</b> '+esc(g.take)+'</p></div>'}).join("");
+}
+function renderSources(){
+  $("srcList").innerHTML=Object.keys(SRC).map(function(k){return '<li value="'+k.slice(1)+'"><a href="'+SRC[k][1]+'" target="_blank" rel="noopener">'+esc(SRC[k][0])+'</a></li>'}).join("");
+}
+
+/* ---------- Tabs, theme ---------- */
+document.querySelectorAll("nav.tabs button").forEach(function(b){b.addEventListener("click",function(){
+  document.querySelectorAll("nav.tabs button").forEach(function(x){x.setAttribute("aria-selected",x===b?"true":"false")});
+  document.querySelectorAll("section.pane").forEach(function(p){p.hidden=(p.id!==b.dataset.pane)});
+});});
+$("themeBtn").addEventListener("click",function(){var r=document.documentElement;var dark=r.getAttribute("data-theme")==="dark"||(!r.getAttribute("data-theme")&&window.matchMedia("(prefers-color-scheme: dark)").matches);r.setAttribute("data-theme",dark?"light":"dark");});
+["fn","size","pref"].forEach(function(id){$(id).addEventListener("input",function(){$("sizeV").textContent=$("size").value;renderCities();})});
+$("st").innerHTML=STATES.map(function(s,i){return '<option value="'+i+'">'+esc(s[0])+'</option>'}).join("");
+$("st").addEventListener("change",renderApprovals);
+
+/* ---------- Specialist request (prototype only) ---------- */
+$("xBtn").addEventListener("click",function(){
+  var out=$("xOut"); out.hidden=false; out.textContent="";
+  var email=$("x4").value.trim();
+  if(!/^\S+@\S+\.\S+$/.test(email)){out.textContent="Enter a valid work email so a specialist can reply.";return;}
+  var b=document.createElement("b");b.textContent="Request ready: ";out.appendChild(b);
+  out.appendChild(document.createTextNode($("x1").value+($("x2").value?" in "+$("x2").value:"")+". "+($("x3").value?"Your note: "+$("x3").value+". ":"")+"In the full product, this goes to a vetted specialist and you hear back at "+email+". Nothing was sent from this prototype."));
+});
+
+/* ---------- AI assistant (uses Claude where the viewer has it) ---------- */
+var sample=null;
+var CHIPS=["Which city suits a 200-person AI team on a tight budget?","What is the first thing I should file?","Why do sources disagree about Hyderabad?","What does Gujarat's policy require?"];
+$("chips").innerHTML=CHIPS.map(function(c){return '<button class="chip" type="button">'+esc(c)+'</button>'}).join("");
+document.querySelectorAll("#chips .chip").forEach(function(b){b.addEventListener("click",function(){$("q").value=b.textContent;ask();})});
+function groundData(){
+  return JSON.stringify({cities:CITIES.map(function(c){return {name:c.name,state:c.state,costIndexVsBengaluru:c.cost,attritionPct:c.attr,talentDepthScore:c.depth,policy:c.policyText,strongFor:c.strong.map(function(f){return FN[f]}),facts:c.facts.map(function(f){return f[0]})}}),
+   notRanked:LIMITED.map(function(l){return {name:l.name,text:l.text}}),
+   states:STATES.map(function(s){return {state:s[0],policy:s[1]}}),
+   approvalSteps:STEPS.map(function(s){return {step:s[0],detail:s[1]}}),
+   whereSourcesDisagree:GAPS.map(function(g){return {topic:g.t,viewA:g.a[0],viewB:g.b[0],advice:g.take}}),
+   talentCostNote:"A Bengaluru GCC mid-level engineer (3-5 years) is quoted at Rs 14-22 lakh per year; other cities scale by the cost index."});
+}
+async function ask(){
+  var q=$("q").value.trim(); var ans=$("ans");
+  if(!q){ans.textContent="Type a question first.";return;}
+  if(!sample){ans.textContent="The AI assistant is not available in this view. Use the other tabs.";return;}
+  ans.textContent="Thinking...";
+  var prompt="You are the assistant inside GCC Navigator, a prototype that helps foreign companies choose a city for a Global Capability Centre in India and understand approvals.\nRules: Answer ONLY from the DATA below. If the data does not cover something, say it is not in the data and suggest checking an official source or asking a specialist. Do not invent figures. When sources disagree, say so. Keep the answer under 120 words, in plain language. Give guidance, not legal or tax advice.\nThe user's current settings: function = "+FN[$("fn").value]+", team size = "+$("size").value+", priority = "+$("pref").options[$("pref").selectedIndex].text+".\nDATA:\n"+groundData()+"\nQUESTION: "+q;
+  try{
+    await sample(prompt,{cache:false,onText:function(t){ans.textContent=t.text;}});
+  }catch(e){
+    ans.textContent=(e&&e.code==="rate_limited")?"Too many questions in a short time. Wait a moment and try again.":(e&&e.code==="not_granted")?"Permission for the AI assistant was not granted. You can still use the other tabs.":"The assistant could not answer just now. Try again, or use the other tabs.";
+  }
+}
+$("askBtn").addEventListener("click",ask);
+$("q").addEventListener("keydown",function(e){if(e.key==="Enter")ask();});
+if(window.claude&&window.claude.use){
+  window.claude.use("sample").then(function(s){sample=s;if(!s){$("noAI").hidden=false;$("askBtn").disabled=true;}}).catch(function(){$("noAI").hidden=false;$("askBtn").disabled=true;});
+}else{$("noAI").hidden=false;$("askBtn").disabled=true;}
+
+renderCities();renderLimited();renderApprovals();renderGaps();renderSources();
+</script>
+</body>
+</html>
